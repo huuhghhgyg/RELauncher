@@ -18,6 +18,7 @@ namespace RELauncher
         public int colorSchemeIndex = 0;
         private string NightMode;
         public int launchModeInt;//判断启动模式值
+        double nowVer = 0.12;
 
         private readonly MaterialSkinManager materialSkinManager;
         public LaunchForm()
@@ -84,7 +85,33 @@ namespace RELauncher
             }
             Cleanner();
             loadVersion();
+            try
+            {
+                string newVerStr;
+                double newVer;
+                try
+                {
+                    DownloadFile("http://huuhghhgyg.github.io/REVercheck.txt", "ver.txt", materialProgressBar1, downLabel2);
+                    newVerStr = System.IO.File.ReadAllText(@"./ver.txt");
+                    newVer = Convert.ToDouble(newVerStr);
+                    if (nowVer < newVer)
+                    {
+                        MessageBox.Show("启动器有更新，可到下载中心点击Update下载");
+                    }
+                    materialProgressBar1.Value = 0;
+                    downLabel2.Text = "下载:Null";
+                }
+                catch
+                {
+
+                }
+            }
+            catch
+            {
+
+            }
         }
+
 
         private void loadVersion()              //读取游戏列表
         {
@@ -230,6 +257,10 @@ namespace RELauncher
             {
                 File.Delete("./.minecraft/versions/1.7.10-Forge10.13.4.1490-1.7.10/mods.zip");
             }
+            if (File.Exists("./ver.txt"))
+            {
+                File.Delete("./ver.txt");
+            }
         }
 
 
@@ -292,7 +323,6 @@ namespace RELauncher
                     break;
             }
         }
-
         private void SaveSettings()
         {
             Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -492,5 +522,31 @@ namespace RELauncher
                     needTime.Visible = false;//隐藏下载时间
             }
         }
+
+        private void materialFlatButton1_Click_1(object sender, EventArgs e)
+        {
+            /*检查更新*/
+            string newVerStr;
+            double newVer;
+                newVerStr = System.IO.File.ReadAllText(@"./ver.txt");
+                newVer = Convert.ToDouble(newVerStr);
+                materialProgressBar1.Value = 0;
+                downLabel2.Text = "下载:Null";
+                if (nowVer < newVer)
+                {
+                    try
+                    {
+                    downLabel1.Text = "正在更新启动器";
+                    DownloadFile("http://huuhghhgyg.github.io/RELauncher.exe", "RELauncherUpdated.exe", materialProgressBar1, downLabel2);
+                    downLabel1.Text = "未在下载";
+                    downLabel2.Text = "下载:Null";
+                    materialProgressBar1.Value = 0;
+                    MessageBox.Show("新版启动器下载完成，已命名为RELauncherUpdated。\n请及时删除本版启动器并更改新启动器名为RELauncher以便下次能够正常更新");
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+        }
     }
-}

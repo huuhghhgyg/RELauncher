@@ -54,13 +54,14 @@
             this.bgiLabel = new MaterialSkin.Controls.MaterialLabel();
             this.openDir = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.openPic = new MaterialSkin.Controls.MaterialFlatButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.launchModeLabel = new MaterialSkin.Controls.MaterialLabel();
             this.launchMode2 = new MaterialSkin.Controls.MaterialRadioButton();
             this.launchMode1 = new MaterialSkin.Controls.MaterialRadioButton();
             this.nightButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.changeColor = new MaterialSkin.Controls.MaterialFlatButton();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
             this.needTime = new System.Windows.Forms.Label();
             this.downLabel2 = new System.Windows.Forms.Label();
             this.downLabel1 = new System.Windows.Forms.Label();
@@ -376,12 +377,12 @@
             this.tabPage3.Controls.Add(this.bgiLabel);
             this.tabPage3.Controls.Add(this.openDir);
             this.tabPage3.Controls.Add(this.openPic);
-            this.tabPage3.Controls.Add(this.pictureBox1);
             this.tabPage3.Controls.Add(this.launchModeLabel);
             this.tabPage3.Controls.Add(this.launchMode2);
             this.tabPage3.Controls.Add(this.launchMode1);
             this.tabPage3.Controls.Add(this.nightButton);
             this.tabPage3.Controls.Add(this.changeColor);
+            this.tabPage3.Controls.Add(this.pictureBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -453,16 +454,6 @@
             this.openPic.Text = "open";
             this.openPic.UseVisualStyleBackColor = true;
             this.openPic.Click += new System.EventHandler(this.openPic_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pictureBox1.Location = new System.Drawing.Point(383, 57);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(378, 175);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
             // 
             // launchModeLabel
             // 
@@ -548,9 +539,20 @@
             this.changeColor.UseVisualStyleBackColor = true;
             this.changeColor.Click += new System.EventHandler(this.changeColor_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pictureBox1.Location = new System.Drawing.Point(383, 57);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(378, 175);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.White;
+            this.tabPage4.Controls.Add(this.materialFlatButton1);
             this.tabPage4.Controls.Add(this.needTime);
             this.tabPage4.Controls.Add(this.downLabel2);
             this.tabPage4.Controls.Add(this.downLabel1);
@@ -563,6 +565,23 @@
             this.tabPage4.Size = new System.Drawing.Size(792, 358);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Mod客户端";
+            // 
+            // materialFlatButton1
+            // 
+            this.materialFlatButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialFlatButton1.AutoSize = true;
+            this.materialFlatButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialFlatButton1.Depth = 0;
+            this.materialFlatButton1.Location = new System.Drawing.Point(674, 299);
+            this.materialFlatButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialFlatButton1.Name = "materialFlatButton1";
+            this.materialFlatButton1.Primary = true;
+            this.materialFlatButton1.Size = new System.Drawing.Size(92, 36);
+            this.materialFlatButton1.TabIndex = 9;
+            this.materialFlatButton1.Text = "update";
+            this.materialFlatButton1.UseVisualStyleBackColor = true;
+            this.materialFlatButton1.Click += new System.EventHandler(this.materialFlatButton1_Click_1);
             // 
             // needTime
             // 
@@ -600,6 +619,7 @@
             this.downMod.AutoSize = true;
             this.downMod.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.downMod.Depth = 0;
+            this.downMod.Enabled = false;
             this.downMod.Location = new System.Drawing.Point(533, 299);
             this.downMod.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.downMod.MouseState = MaterialSkin.MouseState.HOVER;
@@ -617,11 +637,12 @@
             this.downAll.AutoSize = true;
             this.downAll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.downAll.Depth = 0;
-            this.downAll.Location = new System.Drawing.Point(684, 299);
+            this.downAll.Enabled = false;
+            this.downAll.Location = new System.Drawing.Point(423, 299);
             this.downAll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.downAll.MouseState = MaterialSkin.MouseState.HOVER;
             this.downAll.Name = "downAll";
-            this.downAll.Primary = true;
+            this.downAll.Primary = false;
             this.downAll.Size = new System.Drawing.Size(82, 36);
             this.downAll.TabIndex = 2;
             this.downAll.Text = "全量包";
@@ -675,7 +696,7 @@
             this.materialLabel4.Name = "materialLabel4";
             this.materialLabel4.Size = new System.Drawing.Size(145, 27);
             this.materialLabel4.TabIndex = 3;
-            this.materialLabel4.Text = "Ver:1.0 Build2";
+            this.materialLabel4.Text = "Ver:1.0 Build3";
             // 
             // REJoiner
             // 
@@ -792,6 +813,7 @@
         private System.Windows.Forms.Label needTime;
         private System.Windows.Forms.Label downLabel1;
         private System.Windows.Forms.Label downLabel2;
+        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton1;
     }
 }
 
