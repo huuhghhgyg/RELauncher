@@ -19,7 +19,7 @@ namespace RELauncher
         public int colorSchemeIndex = 0;
         private string NightMode;
         public int launchModeInt;//判断启动模式值
-        double nowVer = 0.12;
+        double nowVer = 0.14;
 
         private readonly MaterialSkinManager materialSkinManager;
         public LaunchForm()
