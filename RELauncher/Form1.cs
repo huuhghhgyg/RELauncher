@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text;
 using System.Drawing;
+using System.Threading;
 
 namespace RELauncher
 {
@@ -18,7 +19,7 @@ namespace RELauncher
         public int colorSchemeIndex = 0;
         private string NightMode;
         public int launchModeInt;//判断启动模式值
-        double nowVer = 0.13;
+        double nowVer = 0.12;
 
         private readonly MaterialSkinManager materialSkinManager;
         public LaunchForm()
@@ -85,6 +86,13 @@ namespace RELauncher
             }
             Cleanner();
             loadVersion();
+            Thread chkUpdate = new Thread(new ThreadStart(checkUpdate));
+            chkUpdate.IsBackground = true;
+            chkUpdate.Start();
+        }
+
+        private void checkUpdate()
+        {
             try
             {
                 string newVerStr;
@@ -112,7 +120,6 @@ namespace RELauncher
             }
         }
 
-
         private void loadVersion()              //读取游戏列表
         {
             var versions = Program.Core.GetVersions().ToArray();
@@ -122,91 +129,101 @@ namespace RELauncher
 
         private void LaunchIt()
         {
-            var ver = (KMCCC.Launcher.Version)comboBox1.SelectedItem;
-            if (launchModeInt == 1)
+            try
             {
-                var result = Program.Core.Launch(new LaunchOptions
+                var ver = (KMCCC.Launcher.Version)comboBox1.SelectedItem;
+                if (launchModeInt == 1)
                 {
-                    Version = ver, //Ver为Versions里你要启动的版本名字
-                    MaxMemory = int.Parse(memorySettings.Text), //最大内存，int类型
-                    Authenticator = new OfflineAuthenticator(usrName.Text), //离线启动，ZhaiSoul那儿为你要设置的游戏名
-
-                    //Authenticator = new YggdrasilLogin("邮箱", "密码", true), // 正版启动，最后一个为是否twitch登录
-
-                    Mode = LaunchMode.MCLauncher, //启动模式，这个我会在后面解释有哪几种
-
-                    Size = new WindowSize { Height = Convert.ToUInt16(gameHeight.Text), Width = Convert.ToUInt16(gameWidth.Text) } //设置窗口大小，可以不要
-                });
-                if (!result.Success)
-                {
-                    //MessageBox.Show(result.ErrorMessage, result.ErrorType.ToString());
-                    switch (result.ErrorType)
+                    if (gameHeight.Text == "" && gameWidth.Text == "" || gameHeight.Text == null && gameWidth.Text == null)
                     {
-                        case ErrorType.NoJAVA:
-                            MessageBox.Show("你系统的Java有异常，可能你非正常途径删除过Java，请尝试重新安装Java\n详细信息：" + result.ErrorMessage, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        case ErrorType.AuthenticationFailed:
-                            MessageBox.Show(this, "正版验证失败！请检查你的账号密码", "账号错误\n详细信息：" + result.ErrorMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        case ErrorType.UncompressingFailed:
-                            MessageBox.Show(this, "可能的多开或文件损坏，请确认文件完整且不要多开\n如果你不是多开游戏的话，请检查libraries文件夹是否完整\n详细信息：" + result.ErrorMessage, "可能的多开或文件损坏", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        default:
-                            MessageBox.Show(this,
-                                result.ErrorMessage + "\n" +
-                                (result.Exception == null ? string.Empty : result.Exception.StackTrace),
-                                "启动错误，请将此窗口截图向开发者寻求帮助");
-                            break;
+                        gameHeight.Text = "720";
+                        gameWidth.Text = "1280";
+                    }
+                    var result = Program.Core.Launch(new LaunchOptions
+                    {
+                        Version = ver, //Ver为Versions里你要启动的版本名字
+                        MaxMemory = int.Parse(memorySettings.Text), //最大内存，int类型
+                        Authenticator = new OfflineAuthenticator(usrName.Text), //离线启动，ZhaiSoul那儿为你要设置的游戏名
+
+                        //Authenticator = new YggdrasilLogin("邮箱", "密码", true), // 正版启动，最后一个为是否twitch登录
+
+                        Mode = LaunchMode.MCLauncher, //启动模式，这个我会在后面解释有哪几种
+                        Size = new WindowSize { Height = Convert.ToUInt16(gameHeight.Text), Width = Convert.ToUInt16(gameWidth.Text) } //设置窗口大小，可以不要}
+                    });
+                    if (!result.Success)
+                    {
+                        //MessageBox.Show(result.ErrorMessage, result.ErrorType.ToString());
+                        switch (result.ErrorType)
+                        {
+                            case ErrorType.NoJAVA:
+                                MessageBox.Show("你系统的Java有异常，可能你非正常途径删除过Java，请尝试重新安装Java\n详细信息：" + result.ErrorMessage, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            case ErrorType.AuthenticationFailed:
+                                MessageBox.Show(this, "正版验证失败！请检查你的账号密码", "账号错误\n详细信息：" + result.ErrorMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            case ErrorType.UncompressingFailed:
+                                MessageBox.Show(this, "可能的多开或文件损坏，请确认文件完整且不要多开\n如果你不是多开游戏的话，请检查libraries文件夹是否完整\n详细信息：" + result.ErrorMessage, "可能的多开或文件损坏", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            default:
+                                MessageBox.Show(this,
+                                    result.ErrorMessage + "\n" +
+                                    (result.Exception == null ? string.Empty : result.Exception.StackTrace),
+                                    "启动错误，请将此窗口截图向开发者寻求帮助");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
                     }
                 }
                 else
                 {
-                    this.Close();
-                }
-            }
-            else
-            {
-                var result = Program.Core.Launch(new LaunchOptions
-                {
-                    Version = ver, //Ver为Versions里你要启动的版本名字
-                    MaxMemory = int.Parse(memorySettings.Text), //最大内存，int类型
-                    Authenticator = new OfflineAuthenticator(usrName.Text), //离线启动，ZhaiSoul那儿为你要设置的游戏名
-
-                    //Authenticator = new YggdrasilLogin("邮箱", "密码", true), // 正版启动，最后一个为是否twitch登录
-
-                    Mode = LaunchMode.BmclMode, //启动模式，这个我会在后面解释有哪几种
-
-                    Size = new WindowSize { Height = Convert.ToUInt16(gameHeight.Text), Width = Convert.ToUInt16(gameWidth.Text) } //设置窗口大小，可以不要
-                });
-                if (!result.Success)
-                {
-                    //MessageBox.Show(result.ErrorMessage, result.ErrorType.ToString());
-                    switch (result.ErrorType)
+                    var result = Program.Core.Launch(new LaunchOptions
                     {
-                        case ErrorType.NoJAVA:
-                            MessageBox.Show("你系统的Java有异常，可能你非正常途径删除过Java，请尝试重新安装Java\n详细信息：" + result.ErrorMessage, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        case ErrorType.AuthenticationFailed:
-                            MessageBox.Show(this, "正版验证失败！请检查你的账号密码", "账号错误\n详细信息：" + result.ErrorMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        case ErrorType.UncompressingFailed:
-                            MessageBox.Show(this, "可能的多开或文件损坏，请确认文件完整且不要多开\n如果你不是多开游戏的话，请检查libraries文件夹是否完整\n详细信息：" + result.ErrorMessage, "可能的多开或文件损坏", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        default:
-                            MessageBox.Show(this,
-                                result.ErrorMessage + "\n" +
-                                (result.Exception == null ? string.Empty : result.Exception.StackTrace),
-                                "启动错误，请将此窗口截图向开发者寻求帮助");
-                            break;
+                        Version = ver, //Ver为Versions里你要启动的版本名字
+                        MaxMemory = int.Parse(memorySettings.Text), //最大内存，int类型
+                        Authenticator = new OfflineAuthenticator(usrName.Text), //离线启动，ZhaiSoul那儿为你要设置的游戏名
+
+                        //Authenticator = new YggdrasilLogin("邮箱", "密码", true), // 正版启动，最后一个为是否twitch登录
+
+                        Mode = LaunchMode.BmclMode, //启动模式，这个我会在后面解释有哪几种
+
+                        Size = new WindowSize { Height = Convert.ToUInt16(gameHeight.Text), Width = Convert.ToUInt16(gameWidth.Text) } //设置窗口大小，可以不要
+                    });
+                    if (!result.Success)
+                    {
+                        //MessageBox.Show(result.ErrorMessage, result.ErrorType.ToString());
+                        switch (result.ErrorType)
+                        {
+                            case ErrorType.NoJAVA:
+                                MessageBox.Show("你系统的Java有异常，可能你非正常途径删除过Java，请尝试重新安装Java\n详细信息：" + result.ErrorMessage, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            case ErrorType.AuthenticationFailed:
+                                MessageBox.Show(this, "正版验证失败！请检查你的账号密码", "账号错误\n详细信息：" + result.ErrorMessage, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            case ErrorType.UncompressingFailed:
+                                MessageBox.Show(this, "可能的多开或文件损坏，请确认文件完整且不要多开\n如果你不是多开游戏的话，请检查libraries文件夹是否完整\n详细信息：" + result.ErrorMessage, "可能的多开或文件损坏", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                break;
+                            default:
+                                MessageBox.Show(this,
+                                    result.ErrorMessage + "\n" +
+                                    (result.Exception == null ? string.Empty : result.Exception.StackTrace),
+                                    "启动错误，请将此窗口截图向开发者寻求帮助");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
                     }
                 }
-                else
-                {
-                    this.Close();
-                }
             }
-        }
-
+            catch
+            {
+            }
+            }
+       
         public void DownloadFile(string URL, string filename, System.Windows.Forms.ProgressBar prog, System.Windows.Forms.Label downLabel1)
         {
             try
@@ -353,6 +370,7 @@ namespace RELauncher
         {
             if (usrName.Text != "" && javaPathText.Text != "" && memorySettings.Text != "")
             {
+
                 LaunchIt();
             }
             else

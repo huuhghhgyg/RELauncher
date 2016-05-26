@@ -238,7 +238,7 @@
             // 
             this.gameWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gameWidth.Depth = 0;
-            this.gameWidth.Hint = "宽度(选填)";
+            this.gameWidth.Hint = "宽度";
             this.gameWidth.Location = new System.Drawing.Point(457, 86);
             this.gameWidth.MaxLength = 32767;
             this.gameWidth.MouseState = MaterialSkin.MouseState.HOVER;
@@ -681,7 +681,7 @@
             this.materialLabel5.Location = new System.Drawing.Point(10, 191);
             this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel5.Name = "materialLabel5";
-            this.materialLabel5.Size = new System.Drawing.Size(375, 27);
+            this.materialLabel5.Size = new System.Drawing.Size(383, 27);
             this.materialLabel5.TabIndex = 4;
             this.materialLabel5.Text = "感谢KMCCC,Material Skin 项目的开源";
             // 
@@ -694,7 +694,7 @@
             this.materialLabel4.Location = new System.Drawing.Point(10, 315);
             this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel4.Name = "materialLabel4";
-            this.materialLabel4.Size = new System.Drawing.Size(145, 27);
+            this.materialLabel4.Size = new System.Drawing.Size(152, 27);
             this.materialLabel4.TabIndex = 3;
             this.materialLabel4.Text = "Ver:1.0 Build3";
             // 
@@ -707,7 +707,7 @@
             this.REJoiner.Location = new System.Drawing.Point(10, 140);
             this.REJoiner.MouseState = MaterialSkin.MouseState.HOVER;
             this.REJoiner.Name = "REJoiner";
-            this.REJoiner.Size = new System.Drawing.Size(225, 27);
+            this.REJoiner.Size = new System.Drawing.Size(233, 27);
             this.REJoiner.TabIndex = 2;
             this.REJoiner.Text = "\"Joiner\":Nuke,locceed";
             // 
@@ -720,7 +720,7 @@
             this.REMaker.Location = new System.Drawing.Point(10, 92);
             this.REMaker.MouseState = MaterialSkin.MouseState.HOVER;
             this.REMaker.Name = "REMaker";
-            this.REMaker.Size = new System.Drawing.Size(179, 27);
+            this.REMaker.Size = new System.Drawing.Size(190, 27);
             this.REMaker.TabIndex = 1;
             this.REMaker.Text = "作者:huuhghhgyg";
             // 
@@ -733,7 +733,7 @@
             this.RElabel.Location = new System.Drawing.Point(8, 20);
             this.RElabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.RElabel.Name = "RElabel";
-            this.RElabel.Size = new System.Drawing.Size(130, 27);
+            this.RElabel.Size = new System.Drawing.Size(139, 27);
             this.RElabel.TabIndex = 0;
             this.RElabel.Text = "RELauncher";
             // 
