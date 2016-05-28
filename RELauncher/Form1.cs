@@ -10,6 +10,7 @@ using System.IO;
 using System.Text;
 using System.Drawing;
 using System.Threading;
+using System.Diagnostics;
 
 namespace RELauncher
 {
@@ -19,7 +20,7 @@ namespace RELauncher
         public int colorSchemeIndex = 0;
         private string NightMode;
         public int launchModeInt;//判断启动模式值
-        double nowVer = 0.14;
+        double nowVer = 0.15;
 
         private readonly MaterialSkinManager materialSkinManager;
         public LaunchForm()
@@ -89,6 +90,11 @@ namespace RELauncher
             Thread chkUpdate = new Thread(new ThreadStart(checkUpdate));
             chkUpdate.IsBackground = true;
             chkUpdate.Start();
+            if(usrName.Text=="" || javaPathText.Text=="" || memorySettings.Text == "")
+            {
+                materialTabControl1.SelectedTab = tabPage2;
+                MessageBox.Show("骚年你还没设置哦（ ・∀・）", "友情提示");
+            }
         }
 
         private void checkUpdate()
@@ -397,9 +403,12 @@ namespace RELauncher
 
         private void autoJava_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("请确定您安装了Java", "确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            try
             {
-                javaPathText.Text = KMCCC.Tools.SystemTools.FindJava().Last();//textbox1显示我们找到的最后一个Java（也是最近安装的一个）
+            javaPathText.Text = KMCCC.Tools.SystemTools.FindJava().Last();//textbox1显示我们找到的最后一个Java（也是最近安装的一个）
+            }
+            catch
+            {
             }
         }
 
@@ -424,7 +433,10 @@ namespace RELauncher
 
         private void autoMemory_Click(object sender, EventArgs e)
         {
-            memorySettings.Text = "1024";
+            //memorySettings.Text = "1024";
+            double usedMemory = 0;
+            usedMemory = Math.Round(Process.GetCurrentProcess().WorkingSet64 / 1024.0 / 1024.0*100);
+            memorySettings.Text = usedMemory.ToString();
         }
 
         private void loadSetttings2_Click(object sender, EventArgs e)
